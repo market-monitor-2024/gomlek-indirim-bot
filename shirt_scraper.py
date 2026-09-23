@@ -337,3 +337,26 @@ if __name__ == "__main__":
     results = scraper.run()
     print(f"Toplam {len(results)} ürün bulundu")
     send_email(results)
+
+# Test modu - hata ayıklama için
+if __name__ == "__main__":
+    print("Script başladı...")
+    scraper = ShirtScraper()
+    
+    # Trendyol test
+    print("\n=== TRENDYOL TEST ===")
+    try:
+        scraper.driver.get("https://www.trendyol.com/gomlek-x-c75?sort=priceasc")
+        time.sleep(3)
+        soup = BeautifulSoup(scraper.driver.page_source, 'html.parser')
+        print(f"HTML uzunluğu: {len(scraper.driver.page_source)} karakter")
+        
+        # Farklı class'ları ara
+        test_classes = ['p-card-vertical', 'p-card', 'productCard', 'productItem']
+        for cls in test_classes:
+            found = soup.find_all('div', class_=cls)
+            print(f"  {cls}: {len(found)} bulundu")
+    except Exception as e:
+        print(f"Hata: {e}")
+    
+    scraper.close()
