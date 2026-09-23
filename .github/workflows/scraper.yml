@@ -1,0 +1,28 @@
+name: Günlük Gömlek Scraper
+
+on:
+  schedule:
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Python kur
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Paketleri kur
+      run: |
+        pip install requests beautifulsoup4
+    
+    - name: Scraper'ı çalıştır
+      env:
+        SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+      run: python shirt_scraper.py
