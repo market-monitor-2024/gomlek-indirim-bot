@@ -46,14 +46,41 @@ class ShirtScraper:
             url = "https://www.akakce.com/erkek-gomlek.html"
             
             self.driver.get(url)
-            time.sleep(4)
+            time.sleep(5)
             
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
+            time.sleep(3)
             
             soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+            
+            # DEBUG: HTML'i kontrol et
+            print(f"  HTML boyutu: {len(self.driver.page_source)} karakter")
+            
+            # Farklı class'ları ara
+            test_classes = [
+                'productListContent-item',
+                'product-item',
+                'productItem',
+                'item',
+                'product'
+            ]
+            
+            for cls in test_classes:
+                found = soup.find_all(class_=cls)
+                print(f"  Aradığım: '{cls}' → {len(found)} bulundu")
+            
+            # Tüm li elemanlarını say
+            all_lis = soup.find_all('li')
+            print(f"  Toplam <li> elemanları: {len(all_lis)}")
+            
+            # İlk li'nin içeriğini göster
+            if all_lis:
+                print(f"\n  İlk <li> elemanının HTML'i (ilk 300 karakter):")
+                print(f"  {str(all_lis[0])[:300]}")
+            
+            # Şimdi normal işlemi yap
             products = soup.find_all('li', class_='productListContent-item')
-            print(f"  {len(products)} ürün bulundu")
+            print(f"\n  Sonuç: {len(products)} ürün bulundu")
             
             for idx, product in enumerate(products):
                 try:
