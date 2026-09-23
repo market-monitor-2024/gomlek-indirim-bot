@@ -17,14 +17,15 @@ jobs:
       with:
         python-version: '3.11'
     
-    - name: Chrome ve Chromdriver kur
+    - name: Chrome ve driver kur
       run: |
         sudo apt-get update
-        sudo apt-get install -y chromium-browser chromium-driver
+        sudo apt-get install -y chromium-browser
+        pip install webdriver-manager
     
     - name: Python paketlerini kur
       run: |
-        pip install selenium beautifulsoup4
+        pip install selenium beautifulsoup4 webdriver-manager
     
     - name: Scraper'ı çalıştır
       env:
